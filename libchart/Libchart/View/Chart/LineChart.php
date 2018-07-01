@@ -40,9 +40,11 @@
 
         /**
          * Computes the layout.
+         * 
+         * @param boolean whether to print caption or not (optional)
          */
-        protected function computeLayout() {
-            if ($this->hasSeveralSerie) {
+        protected function computeLayout($caption = true) {
+            if ($this->hasSeveralSerie && $caption) {
                 $this->plot->setHasCaption(true);
             }
             $this->plot->computeLayout();
@@ -185,21 +187,22 @@
          * Render the chart image.
          *
          * @param string name of the file to render the image to (optional)
+         * @param boolean whether to print caption or not (optional)
          */
-        public function render($fileName = null) {
+        public function render($fileName = null, $caption = true) {
             // Check the data model
             $this->checkDataModel();
 
             $this->bound->computeBound($this->dataSet);
             $this->computeAxis();
-            $this->computeLayout();
+            $this->computeLayout($caption);
             $this->createImage();
             $this->plot->printLogo();
             $this->plot->printTitle();
             if (!$this->isEmptyDataSet(2)) {
                 $this->printAxis();
                 $this->printLine();
-                if ($this->hasSeveralSerie) {
+                if ($this->hasSeveralSerie && $caption) {
                     $this->printCaption();
                 }
             }
